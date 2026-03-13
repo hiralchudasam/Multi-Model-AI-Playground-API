@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Query
 from schemas.request import PredictRequest, BatchPredictRequest
 from schemas.response import PredictResponse, BatchPredictResponse
 from models.registry import get_model
-from models.llm import call_claude
+from models.llm import call_gemini
 from utils.logger import log_request
 from datetime import datetime
 from typing import Optional
@@ -39,7 +39,7 @@ async def predict(
     max_tokens = body.max_tokens if body.max_tokens is not None else model["default_max_tokens"]
 
     try:
-        output, tokens = await call_claude(
+        output, tokens = await call_gemini(
             user_text=body.text,
             system_prompt=model["persona"],
             temperature=temperature,
@@ -91,7 +91,7 @@ async def batch_predict(
 
     for text in body.texts:
         try:
-            output, tokens = await call_claude(
+            output, tokens = await call_gemini(
                 user_text=text,
                 system_prompt=model["persona"],
                 temperature=temperature,
@@ -142,7 +142,7 @@ async def compare_models(
         if not model or not model["active"]:
             continue
         try:
-            output, tokens = await call_claude(
+            output, tokens = await call_gemini(
                 user_text=text,
                 system_prompt=model["persona"],
                 temperature=temperature,
