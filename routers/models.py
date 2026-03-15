@@ -7,6 +7,7 @@ from typing import Optional
 router = APIRouter()
 
 
+
 # ─── GET /models ──────────────────────────────────────────────────────────────
 # Returns a list of all available AI models/personas.
 # Query param : active_only → if True, only return models that are active
